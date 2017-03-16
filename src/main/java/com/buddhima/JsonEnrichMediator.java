@@ -2,7 +2,6 @@ package com.buddhima;
 
 import org.apache.synapse.ManagedLifecycle;
 import org.apache.synapse.MessageContext;
-import org.apache.synapse.SynapseException;
 import org.apache.synapse.SynapseLog;
 import org.apache.synapse.core.SynapseEnvironment;
 import org.apache.synapse.mediators.AbstractMediator;
@@ -23,17 +22,6 @@ public class JsonEnrichMediator extends AbstractMediator  implements ManagedLife
 	public static final int PAYLOAD = 1;
 	public static final int PROPERTY = 2;
 	public static final int INLINE = 3;
-
-	private String sourceClone;
-	private String sourceType;
-	private String sourceJSONPath;
-	private String sourceProperty;
-	private String sourceInlineJSONNode;
-
-	private String targetAction;
-	private String targetJSONPath;
-	private String targetProperty;
-	private String targetType;
 
 	private JsonSource source = null;
 	private JsonTarget target = null;
@@ -114,77 +102,6 @@ public class JsonEnrichMediator extends AbstractMediator  implements ManagedLife
 	/**
 	 * Getters and Setters
 	 */
-	public String getSourceClone() {
-		return sourceClone;
-	}
-
-	public void setSourceClone(String sourceClone) {
-		this.sourceClone = sourceClone;
-	}
-
-	public String getSourceType() {
-		return sourceType;
-	}
-
-	public void setSourceType(String sourceType) {
-		this.sourceType = sourceType;
-	}
-
-	public String getSourceJSONPath() {
-		return sourceJSONPath;
-	}
-
-	public void setSourceJSONPath(String sourceJSONPath) {
-		this.sourceJSONPath = sourceJSONPath;
-	}
-
-	public String getSourceProperty() {
-		return sourceProperty;
-	}
-
-	public void setSourceProperty(String sourceProperty) {
-		this.sourceProperty = sourceProperty;
-	}
-
-	public String getSourceInlineJSONNode() {
-		return sourceInlineJSONNode;
-	}
-
-	public void setSourceInlineJSONNode(String sourceInlineJSONNode) {
-		this.sourceInlineJSONNode = sourceInlineJSONNode;
-	}
-
-	public String getTargetAction() {
-		return targetAction;
-	}
-
-	public void setTargetAction(String targetAction) {
-		this.targetAction = targetAction;
-	}
-
-	public String getTargetJSONPath() {
-		return targetJSONPath;
-	}
-
-	public void setTargetJSONPath(String targetJSONPath) {
-		this.targetJSONPath = targetJSONPath;
-	}
-
-	public String getTargetProperty() {
-		return targetProperty;
-	}
-
-	public void setTargetProperty(String targetProperty) {
-		this.targetProperty = targetProperty;
-	}
-
-	public String getTargetType() {
-		return targetType;
-	}
-
-	public void setTargetType(String targetType) {
-		this.targetType = targetType;
-	}
 
 	public JsonSource getSource() {
 		return source;
