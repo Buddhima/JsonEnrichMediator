@@ -1,19 +1,13 @@
-package com.buddhima.xml;
+package com.buddhima;
 
-import com.buddhima.JsonEnrichMediator;
-import com.buddhima.JsonSource;
-import com.buddhima.JsonTarget;
 import org.apache.axiom.om.OMElement;
 import org.apache.synapse.Mediator;
 import org.apache.synapse.config.xml.AbstractMediatorSerializer;
 
-/**
- * Created by buddhima on 3/15/17.
- */
 public class JsonEnrichMediatorSerializer extends AbstractMediatorSerializer {
     protected OMElement serializeSpecificMediator(Mediator m) {
         assert m != null : "mediator cannot be null";
-        assert m instanceof JsonEnrichMediator : "mediator should be of type EnrichMediator";
+        assert m instanceof JsonEnrichMediator : "mediator should be of type JsonEnrichMediator";
 
         JsonEnrichMediator mediator = (JsonEnrichMediator)m;
 
@@ -33,50 +27,44 @@ public class JsonEnrichMediatorSerializer extends AbstractMediatorSerializer {
 
         if (source.getSourceType() != JsonEnrichMediator.CUSTOM) {
             sourceEle.addAttribute(fac.createOMAttribute("type", nullNS,
-                    intTypeToString(source.getSourceType())));
+                    JsonEnrichMediator.findTypeString(source.getSourceType())));
         }
 
         if (source.isClone()) {
-            sourceEle.addAttribute(fac.createOMAttribute("clone", nullNS,
-                    Boolean.toString(source.isClone())));
+            sourceEle.addAttribute(fac.createOMAttribute("clone", nullNS, Boolean.toString(source.isClone())));
         }
 
         if (source.getSourceType() == JsonEnrichMediator.PROPERTY) {
             sourceEle.addAttribute(fac.createOMAttribute("property", nullNS, source.getProperty()));
         } else if (source.getSourceType() == JsonEnrichMediator.CUSTOM) {
-            SynapseXPathSerializer.serializeXPath(source.getXpath(), sourceEle, "xpath");
+            sourceEle.addAttribute(fac.createOMAttribute("JSONPath", nullNS, source.getJsonPath()));
         } else if (source.getSourceType() == JsonEnrichMediator.INLINE) {
-            if (source.getInlineOMNode() instanceof OMElement) {
-                sourceEle.addChild(((OMElement) source.getInlineOMNode()).cloneOMElement());
-            } else if (source.getInlineOMNode() instanceof OMText) {
-                /*Text as inline content*/
-                sourceEle.setText(((OMText) source.getInlineOMNode()).getText());
-            } else if (source.getInlineKey() != null) {
-                sourceEle.addAttribute("key", source.getInlineKey(), null);
-            }
+            sourceEle.setText(source.getInlineJSONNode());
         }
         return sourceEle;
     }
 
     private OMElement serializeTarget(JsonTarget target) {
-        return null;
-    }
+        OMElement targetEle = fac.createOMElement("target", synNS);
 
-    private String intTypeToString(int type) {
-        if (type == JsonEnrichMediator.CUSTOM) {
-            return EnrichMediatorFactory.CUSTOM;
-        } else if (type == JsonEnrichMediator.BODY) {
-            return EnrichMediatorFactory.BODY;
-        } else if (type == JsonEnrichMediator.ENVELOPE) {
-            return EnrichMediatorFactory.ENVELOPE;
-        } else if (type == JsonEnrichMediator.PROPERTY) {
-            return EnrichMediatorFactory.PROPERTY;
-        } else if (type == JsonEnrichMediator.INLINE) {
-            return EnrichMediatorFactory.INLINE;
+        if (target.getTargetType() != JsonEnrichMediator.CUSTOM) {
+            targetEle.addAttribute(fac.createOMAttribute("type", nullNS,
+                    JsonEnrichMediator.findTypeString(target.getTargetType())));
         }
-        return null;
-    }
 
+        if (!target.getAction().equals(JsonTarget.ACTION_SET)) {
+            targetEle.addAttribute(fac.createOMAttribute("action", nullNS, target.getAction()));
+        }
+
+        if (target.getTargetType() == JsonEnrichMediator.PROPERTY) {
+            targetEle.addAttribute(fac.createOMAttribute("property", nullNS, target.getProperty()));
+        } else if (target.getTargetType() == JsonEnrichMediator.CUSTOM) {
+            targetEle.addAttribute(fac.createOMAttribute("property", nullNS, target.getProperty()));
+            targetEle.addAttribute(fac.createOMAttribute("JSONPath", nullNS, target.getJsonPath()));
+        }
+
+        return targetEle;
+    }
 
     public String getMediatorClassName() {
         return JsonEnrichMediator.class.getName();

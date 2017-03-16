@@ -18,6 +18,7 @@ public class JsonSource {
 
     private Configuration configuration = Configuration.defaultConfiguration();
 
+    public JsonSource() {}
 
     public JsonSource(String jsonPath, String property, String sourceType, String clone, String inlineJSONNode) throws Exception {
         this.jsonPath = jsonPath;
@@ -71,9 +72,7 @@ public class JsonSource {
 
                 assert inlineJSONNode != null : "inlineJSONNode shouldn't be null when type is INLINE";
 
-                String replacedString = inlineJSONNode.replaceAll("'", "\"");
-
-                object = JsonPath.using(configuration).parse(replacedString).json();
+                object = JsonPath.using(configuration).parse(inlineJSONNode).json();
 
                 break;
             }
@@ -105,4 +104,44 @@ public class JsonSource {
         return object;
     }
 
+
+    public String getJsonPath() {
+        return jsonPath;
+    }
+
+    public void setJsonPath(String jsonPath) {
+        this.jsonPath = jsonPath;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public int getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(int sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public boolean isClone() {
+        return clone;
+    }
+
+    public void setClone(boolean clone) {
+        this.clone = clone;
+    }
+
+    public String getInlineJSONNode() {
+        return inlineJSONNode;
+    }
+
+    public void setInlineJSONNode(String inlineJSONNode) {
+        this.inlineJSONNode = inlineJSONNode;
+    }
 }

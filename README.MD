@@ -13,8 +13,7 @@ Add following .jar files to *ESB_HOME/repository/components/dropins*
 
 ## Syntax
 ```
-<class name="com.buddhima.JsonEnrichMediator"
-                description="HandlerMediatorClass">
+<class name="com.buddhima.JsonEnrichMediator" description="Enrich JSON payloads">
     <property name="sourceType" value="inline"/>
     <property name="sourceJSONPath" value="$.foo"/>
     <property name="sourceClone" value="false"/>

@@ -1,11 +1,13 @@
 package com.buddhima;
 
+import org.apache.synapse.ManagedLifecycle;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.SynapseLog;
+import org.apache.synapse.core.SynapseEnvironment;
 import org.apache.synapse.mediators.AbstractMediator;
 
-public class JsonEnrichMediator extends AbstractMediator {
+public class JsonEnrichMediator extends AbstractMediator  implements ManagedLifecycle {
 
 	// constants
 	public static final int CUSTOM = 0;
@@ -33,7 +35,7 @@ public class JsonEnrichMediator extends AbstractMediator {
 
 		try {
 
-			initialize();
+//			initialize();
 
 			Object sourceNode;
 
@@ -76,6 +78,29 @@ public class JsonEnrichMediator extends AbstractMediator {
 		} else {
 			return -1;
 		}
+	}
+
+	static String findTypeString(int typeNo) {
+		String typeString = "";
+		switch (typeNo) {
+			case JsonEnrichMediator.CUSTOM: {
+				typeString = "custom";
+				break;
+			}
+			case JsonEnrichMediator.PAYLOAD: {
+				typeString = "payload";
+				break;
+			}
+			case JsonEnrichMediator.PROPERTY: {
+				typeString = "property";
+				break;
+			}
+			case JsonEnrichMediator.INLINE: {
+				typeString = "inline";
+			}
+		}
+
+		return typeString;
 	}
 
 
@@ -152,5 +177,29 @@ public class JsonEnrichMediator extends AbstractMediator {
 
 	public void setTargetType(String targetType) {
 		this.targetType = targetType;
+	}
+
+	public JsonSource getSource() {
+		return source;
+	}
+
+	public void setSource(JsonSource source) {
+		this.source = source;
+	}
+
+	public JsonTarget getTarget() {
+		return target;
+	}
+
+	public void setTarget(JsonTarget target) {
+		this.target = target;
+	}
+
+	public void init(SynapseEnvironment synapseEnvironment) {
+
+	}
+
+	public void destroy() {
+
 	}
 }

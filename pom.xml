@@ -109,6 +109,7 @@
             <Bundle-Name>JsonEnrichMediator</Bundle-Name>
             <Export-Package>com.buddhima</Export-Package>
             <DynamicImport-Package>*</DynamicImport-Package>
+            <Fragment-Host>synapse-core</Fragment-Host>
           </instructions>
         </configuration>
       </plugin>

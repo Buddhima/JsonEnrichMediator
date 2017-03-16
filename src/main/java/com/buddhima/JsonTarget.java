@@ -23,6 +23,7 @@ public class JsonTarget {
     private Configuration configuration = Configuration.defaultConfiguration();
     private SynapseLog log;
 
+    public JsonTarget(){}
 
     public JsonTarget(String jsonPath, String property, String targetType, String action) throws Exception {
         this.jsonPath = jsonPath;
@@ -115,4 +116,35 @@ public class JsonTarget {
 
     }
 
+    public String getJsonPath() {
+        return jsonPath;
+    }
+
+    public void setJsonPath(String jsonPath) {
+        this.jsonPath = jsonPath;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public int getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(int targetType) {
+        this.targetType = targetType;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 }
