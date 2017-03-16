@@ -14,7 +14,7 @@ public class JsonSource {
     private int sourceType = JsonEnrichMediator.CUSTOM;
     private boolean clone = true;
     private String inlineJSONNode = null;
-//    private String inlineKey = null;
+    private String inlineKey = null;
 
     private Configuration configuration = Configuration.defaultConfiguration();
 
@@ -70,9 +70,22 @@ public class JsonSource {
             }
             case JsonEnrichMediator.INLINE: {
 
-                assert inlineJSONNode != null : "inlineJSONNode shouldn't be null when type is INLINE";
+                assert inlineJSONNode != null || inlineKey != null : "inlineJSONNode or key shouldn't be null when type is INLINE";
 
-                object = JsonPath.using(configuration).parse(inlineJSONNode).json();
+                if (inlineJSONNode != null && !inlineJSONNode.trim().equals("")) {
+                    object = JsonPath.using(configuration).parse(inlineJSONNode).json();
+                } else if (inlineKey != null && !inlineKey.trim().equals("")) {
+
+                    Object inlineObj = synapseContext.getEntry(inlineKey);
+
+                    if ((inlineObj instanceof String) && !(((String) inlineObj).trim().equals(""))) {
+                        object = JsonPath.using(configuration).parse(((String) inlineObj)).json();
+                    } else {
+                        synLog.error("Source failed to get inline JSON" + "inlineKey=" + inlineKey);
+                    }
+                } else {
+                    synLog.error("Source failed to get inline JSON" + "inlineJSONNode=" + inlineJSONNode + ", inlineKey=" + inlineKey);
+                }
 
                 break;
             }
@@ -143,5 +156,13 @@ public class JsonSource {
 
     public void setInlineJSONNode(String inlineJSONNode) {
         this.inlineJSONNode = inlineJSONNode;
+    }
+
+    public String getInlineKey() {
+        return inlineKey;
+    }
+
+    public void setInlineKey(String inlineKey) {
+        this.inlineKey = inlineKey;
     }
 }

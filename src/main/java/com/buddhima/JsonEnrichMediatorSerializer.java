@@ -39,7 +39,11 @@ public class JsonEnrichMediatorSerializer extends AbstractMediatorSerializer {
         } else if (source.getSourceType() == JsonEnrichMediator.CUSTOM) {
             sourceEle.addAttribute(fac.createOMAttribute("JSONPath", nullNS, source.getJsonPath()));
         } else if (source.getSourceType() == JsonEnrichMediator.INLINE) {
-            sourceEle.setText(source.getInlineJSONNode());
+            if (source.getInlineJSONNode() != null) {
+                sourceEle.setText(source.getInlineJSONNode());
+            } else if (source.getInlineKey() != null) {
+                sourceEle.addAttribute("key", source.getInlineKey(), null);
+            }
         }
         return sourceEle;
     }

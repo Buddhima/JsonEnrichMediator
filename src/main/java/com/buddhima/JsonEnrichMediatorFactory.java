@@ -86,6 +86,8 @@ public class JsonEnrichMediatorFactory extends AbstractMediatorFactory {
 
             if (sourceEle.getText() != null && (!sourceEle.getText().equals(""))) {
                 source.setInlineJSONNode(sourceEle.getText());
+            } else if (sourceEle.getAttributeValue(ATT_KEY) != null) {
+                source.setInlineKey(sourceEle.getAttributeValue(ATT_KEY));
             } else {
                 handleException("JSON element is required for INLINE type");
             }
