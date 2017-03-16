@@ -18,8 +18,7 @@ public class JsonTarget {
     public static final String ACTION_ADD = "add";
     public static final String ACTION_PUT = "put";
     private String action = ACTION_SET;
-//    public static final String XPATH_PROPERTY_PATTERN = "'[^']*'"
-//
+
     private Configuration configuration = Configuration.defaultConfiguration();
     private SynapseLog log;
 
@@ -94,13 +93,16 @@ public class JsonTarget {
         if (action.equalsIgnoreCase(ACTION_SET)) {
             // replaces an existing value in json
             newJsonString = JsonPath.using(configuration).parse(jsonString).set(expression, sourceNode).jsonString();
+
         } else if (action.equalsIgnoreCase(ACTION_ADD)) {
             // adds a value to a json array
             newJsonString = JsonPath.using(configuration).parse(jsonString).add(expression, sourceNode).jsonString();
+
         } else if (action.equalsIgnoreCase(ACTION_PUT)) {
             // adds a new property to a json object
             assert property != null : "new property name should be specified";
             newJsonString = JsonPath.using(configuration).parse(jsonString).put(expression, property, sourceNode).jsonString();
+
         } else {
             // invalid action
             log.error("Invalid action set: " + action);
@@ -115,6 +117,10 @@ public class JsonTarget {
         }
 
     }
+
+    /**
+     * Getters and Setters
+     */
 
     public String getJsonPath() {
         return jsonPath;

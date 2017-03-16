@@ -7,6 +7,15 @@ import org.apache.synapse.SynapseLog;
 import org.apache.synapse.core.SynapseEnvironment;
 import org.apache.synapse.mediators.AbstractMediator;
 
+/**
+ * Syntax for JsonEnrichMediator
+ *
+ * <enrich>
+ *  <source [clone=true|false] [type=custom|payload|property|inline] JSONPath="" property="" key="" />
+ *  <target [type=custom|payload|property] [action=set|add|put] JSONPath="" property="" />
+ * </enrich>
+ *
+ */
 public class JsonEnrichMediator extends AbstractMediator  implements ManagedLifecycle {
 
 	// constants
@@ -35,8 +44,6 @@ public class JsonEnrichMediator extends AbstractMediator  implements ManagedLife
 
 		try {
 
-//			initialize();
-
 			Object sourceNode;
 
 			sourceNode = source.evaluate(context, synLog);
@@ -52,20 +59,13 @@ public class JsonEnrichMediator extends AbstractMediator  implements ManagedLife
 		return true;
 	}
 
-	private void initialize() {
-		try {
-			if (source == null) {
-				source = new JsonSource(sourceJSONPath, sourceProperty, sourceType, sourceClone, sourceInlineJSONNode);
-			}
-			if (target == null) {
-				target = new JsonTarget(targetJSONPath, targetProperty, targetType, targetAction);
-			}
-		} catch (Exception ex) {
-			log.error("Failed to initialize source and/or target");
-			throw new SynapseException("Failed to initialize source and/or target", ex);
-		}
-	}
-
+	/**
+	 * Finds the integer value of type
+	 *
+	 * @param type String value of type
+	 *
+	 * @return Integer value of type
+	 */
 	static int findType(String type) {
 		if (type.equalsIgnoreCase("custom")) {
 			return JsonEnrichMediator.CUSTOM;
@@ -80,6 +80,13 @@ public class JsonEnrichMediator extends AbstractMediator  implements ManagedLife
 		}
 	}
 
+	/**
+	 * Finds the string value of type
+	 *
+	 * @param typeNo Integer value of type
+	 *
+	 * @return String value of type
+	 */
 	static String findTypeString(int typeNo) {
 		String typeString = "";
 		switch (typeNo) {

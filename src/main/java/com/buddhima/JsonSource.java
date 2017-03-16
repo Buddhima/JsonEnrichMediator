@@ -117,6 +117,9 @@ public class JsonSource {
         return object;
     }
 
+    /**
+     * Getters and Setters
+     */
 
     public String getJsonPath() {
         return jsonPath;
